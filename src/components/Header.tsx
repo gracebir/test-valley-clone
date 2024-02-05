@@ -12,6 +12,7 @@ const Header = () => {
     return (
         <header className='bg-white sticky top-0 w-full h-[72px] z-50'>
             <div className='max-w-[960px] mx-auto flex lg:justify-between justify-around items-center h-full'>
+                {/* header logo and category */}
                 <div className='flex gap-4'>
                     <Link href={"#"}>
                         <Image
@@ -29,7 +30,7 @@ const Header = () => {
                         <span className='text-text-color'>category</span>
                     </div>
                 </div>
-
+                {/* search input */}
                 <div
                     className={`lg:flex hidden border ${
                         isInputFocused
@@ -49,6 +50,7 @@ const Header = () => {
                     />
                 </div>
 
+                {/* authentication */}
                 <div className='lg:flex gap-2 hidden'>
                     <Link href={"#"}>
                         <Image
@@ -68,7 +70,7 @@ const Header = () => {
                         Login / Sign up
                     </Link>
                 </div>
-
+                {/* mobile icons */}
                 <div className='flex lg:hidden items-center text-gray-500'>
                     <VscBell className='p-3 cursor-pointer' size={48} />
                     <Image
