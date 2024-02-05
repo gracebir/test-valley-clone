@@ -1,13 +1,14 @@
 /** @format */
 
 import Header from "@/components/Header";
+import Hero from "@/components/Hero";
 
 export default function Home() {
     return (
-        <div className='bg-gray-400 min-h-screen'>
+        <div className=''>
             <Header />
             <main>
-                <h1>Helo test</h1>
+                <Hero />
             </main>
         </div>
     );
