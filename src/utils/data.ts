@@ -1,5 +1,17 @@
 /** @format */
 
+export const BASE_URL = "https://api.testvalley.kr";
+
+export type productType = {
+    id: number;
+    title: string;
+    description: string;
+    rating: number;
+    thumbnail: {
+        uri: string;
+    };
+};
+
 export const carousels = [
     {
         id: 1,

@@ -27,7 +27,7 @@ const Product = ({
     isReturned,
 }: productProps) => {
     return (
-        <div className='mx-4 flex flex-col gap-2'>
+        <div className='ml-8 flex flex-col gap-2'>
             <div className='w-[174px] h-[174px] relative'>
                 <Image
                     src={imgUrl}
