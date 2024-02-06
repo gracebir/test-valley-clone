@@ -16,6 +16,7 @@ const Header = () => {
                 <div className='flex gap-4'>
                     <Link href={"#"}>
                         <Image
+                            className='object-fill w-full h-full'
                             src={"/assets/logo.svg"}
                             alt='logo'
                             width={128.345}
