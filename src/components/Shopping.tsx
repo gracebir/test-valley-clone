@@ -1,17 +1,51 @@
 /** @format */
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
 import Slider from "react-slick";
 import Product, { productProps } from "./Product";
+import { BASE_URL, productType } from "@/utils/data";
 
 type sectionProp = {
     title: string;
     subTitle: string;
+    filter: string;
+    from?: number;
+    to?: number;
     data?: Array<productProps>;
 };
 
-const Shopping = ({ title, subTitle, data }: sectionProp) => {
+type responseType = {
+    items: Array<productType>;
+};
+
+const Shopping = ({
+    title,
+    subTitle,
+    data,
+    from = 0,
+    to = 5,
+    filter = "TILE",
+}: sectionProp) => {
+    const [products, setProducts] = useState<Array<productType>>([]);
+
+    const getProduct = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/collections?${filter}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch products");
+            }
+            const data: responseType = await response.json();
+            setProducts(data.items);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    };
+
+    useEffect(() => {
+        getProduct();
+    }, []);
+
     let sliderRef = useRef(null);
     const next = () => {
         //@ts-ignore
@@ -22,7 +56,7 @@ const Shopping = ({ title, subTitle, data }: sectionProp) => {
         sliderRef.slickPrev();
     };
     return (
-        <div className='grid gap-8 lg:grid-cols-8 grid-cols-1 my-8 min-h-[326px]'>
+        <div className='grid gap-8 lg:gap-4 lg:grid-cols-9 grid-cols-1 my-8 min-h-[326px]'>
             <div className='lg:col-span-2 col-span-1 flex flex-col justify-between'>
                 <div className='flex flex-col gap-3'>
                     <h1 className='text-2xl font-semibold text-black'>
@@ -40,7 +74,7 @@ const Shopping = ({ title, subTitle, data }: sectionProp) => {
                     </button>
                 </div>
             </div>
-            <div className='col-span-6 hidden lg:block'>
+            <div className='col-span-7 hidden lg:block'>
                 <Slider
                     ref={(slider) => {
                         //@ts-ignore
@@ -53,15 +87,35 @@ const Shopping = ({ title, subTitle, data }: sectionProp) => {
                     autoplay={true}
                     draggable={true}
                 >
-                    {data?.map((product) => (
-                        <Product {...product} />
-                    ))}
+                    {products.length !== 0 &&
+                        products
+                            ?.slice(from, to)
+                            ?.map((product, index) => (
+                                <Product
+                                    key={product.id}
+                                    name={product.title}
+                                    price={data![index]?.price}
+                                    imgUrl={product.thumbnail?.uri}
+                                    discount={data![index]?.discount}
+                                    like={product.rating}
+                                    isReturned={data![index]?.isReturned}
+                                />
+                            ))}
                 </Slider>
             </div>
             <div className='grid lg:hidden col-span-1 grid-cols-2'>
-                {data?.map((product) => (
-                    <Product {...product} />
-                ))}
+                {products.length &&
+                    products?.map((product, index) => (
+                        <Product
+                            key={product.id}
+                            name={product.title}
+                            price={data![index]?.price}
+                            imgUrl={product.thumbnail?.uri}
+                            discount={data![index]?.discount}
+                            like={product.rating}
+                            isReturned={data![index]?.isReturned}
+                        />
+                    ))}
             </div>
         </div>
     );
